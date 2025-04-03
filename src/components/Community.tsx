@@ -1,11 +1,30 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
 const Community = () => {
   const [email, setEmail] = useState("");
+  const [isVisible, setIsVisible] = useState(false);
+  
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.2 });
+
+    const section = document.getElementById('community');
+    if (section) observer.observe(section);
+
+    return () => {
+      if (section) observer.disconnect();
+    };
+  }, []);
   
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,32 +88,56 @@ const Community = () => {
   ];
 
   return (
-    <section id="community" className="py-20 bg-space-gradient px-4">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl font-bold mb-12 text-center neon-text-green">Join the Lunar Crew</h2>
+    <section id="community" className="py-20 bg-space-gradient px-4 relative overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-[20%] right-[15%] w-64 h-64 rounded-full bg-neon-pink/5 blur-3xl opacity-70"></div>
+        <div className="absolute bottom-[30%] left-[10%] w-48 h-48 rounded-full bg-neon-green/5 blur-3xl opacity-70"></div>
+      </div>
+      
+      {/* Floating stars */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {Array.from({ length: 20 }).map((_, i) => (
+          <div
+            key={i}
+            className="star twinkle-star"
+            style={{
+              width: `${1 + Math.random() * 2}px`,
+              height: `${1 + Math.random() * 2}px`,
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 5}s`
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="max-w-6xl mx-auto relative">
+        <h2 className={`text-4xl font-bold mb-12 text-center neon-text-green ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>Join the Lunar Crew</h2>
         
         <div className="grid md:grid-cols-2 gap-10">
-          <div className="space-card p-8">
+          <div className={`space-card p-8 group hover:shadow-[0_0_25px_rgba(255,0,255,0.2)] transition-shadow duration-500 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`} style={{ animationDelay: '0.2s' }}>
             <h3 className="text-2xl font-orbitron mb-6 neon-text-pink">Connect with Us</h3>
             <p className="text-gray-300 mb-8">
               Join the PHOOEY community across our social platforms to stay up to date with the latest news, memes, and lunar adventures!
             </p>
             
-            <div className="flex flex-wrap gap-4 justify-center">
+            <div className="flex flex-wrap gap-6 justify-center">
               {socialLinks.map((link, index) => (
                 <a
                   key={index}
                   href={link.url}
-                  className={`flex items-center justify-center p-4 rounded-full bg-black bg-opacity-30 text-white transition-colors ${link.color}`}
+                  className={`flex items-center justify-center p-4 rounded-full bg-black bg-opacity-30 text-white transition-all duration-300 hover:scale-110 ${link.color} relative group overflow-hidden backdrop-blur-sm`}
                   aria-label={link.name}
                 >
+                  <span className="absolute inset-0 bg-gradient-to-r from-neon-pink to-neon-green opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
                   {link.icon}
                 </a>
               ))}
             </div>
           </div>
           
-          <div className="space-card p-8">
+          <div className={`space-card p-8 group hover:shadow-[0_0_25px_rgba(0,255,153,0.2)] transition-shadow duration-500 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`} style={{ animationDelay: '0.3s' }}>
             <h3 className="text-2xl font-orbitron mb-6 neon-text-pink">Subscribe to Updates</h3>
             <p className="text-gray-300 mb-6">
               Be the first to hear about PHOOEY news, airdrops, and special events. Join our newsletter for exclusive cosmic content!
@@ -105,7 +148,7 @@ const Community = () => {
                 <Input
                   type="email"
                   placeholder="Your email address"
-                  className="bg-black/30 border-white/20 text-white"
+                  className="bg-black/30 border-white/20 text-white focus:border-neon-pink focus:ring-neon-pink/20"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -120,14 +163,17 @@ const Community = () => {
           </div>
         </div>
         
-        <div className="mt-16 text-center animate-float">
+        <div className={`mt-16 text-center animate-float relative ${isVisible ? 'animate-fade-in' : 'opacity-0'}`} style={{ animationDelay: '0.5s' }}>
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="h-32 w-32 rounded-full bg-neon-green blur-3xl opacity-10"></div>
+          </div>
           <img 
             src="/public/lovable-uploads/1c1e67d0-8a47-4916-9f0f-bb6c95a8a263.png" 
             alt="PHOOEY Mouse Astronaut" 
-            className="w-40 h-40 mx-auto object-contain mb-8"
+            className="w-40 h-40 mx-auto object-contain mb-8 transform hover:scale-110 transition-transform duration-300 hover:rotate-3"
           />
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            "One small step for mice, one giant leap for memecoin-kind!" - PHOOEY
+            <span className="neon-text-green">"</span>One small step for mice, one giant leap for memecoin-kind!<span className="neon-text-green">"</span> - PHOOEY
           </p>
         </div>
       </div>

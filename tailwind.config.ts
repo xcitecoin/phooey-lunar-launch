@@ -108,6 +108,30 @@ export default {
 				'twinkle': {
 					'0%, 100%': { opacity: '1' },
 					'50%': { opacity: '0.2' }
+				},
+				'scale-in': {
+					'0%': { 
+						transform: 'scale(0.9)',
+						opacity: '0'
+					},
+					'100%': { 
+						transform: 'scale(1)',
+						opacity: '1'
+					}
+				},
+				'scale-out': {
+					'0%': { 
+						transform: 'scale(1)',
+						opacity: '1'
+					},
+					'100%': { 
+						transform: 'scale(0.9)',
+						opacity: '0'
+					}
+				},
+				'shimmer': {
+					'0%': { backgroundPosition: '-200% 0' },
+					'100%': { backgroundPosition: '200% 0' }
 				}
 			},
 			animation: {
@@ -116,12 +140,16 @@ export default {
 				'float': 'float 6s ease-in-out infinite',
 				'pulse-glow': 'pulse-glow 3s ease-in-out infinite',
 				'spin-slow': 'spin-slow 20s linear infinite',
-				'twinkle': 'twinkle 4s ease-in-out infinite'
+				'twinkle': 'twinkle 4s ease-in-out infinite',
+				'scale-in': 'scale-in 0.3s ease-out forwards',
+				'scale-out': 'scale-out 0.3s ease-out forwards',
+				'shimmer': 'shimmer 2s infinite linear'
 			},
 			backgroundImage: {
 				'space-gradient': 'linear-gradient(to bottom, #0f0c29, #302b63, #24243e)',
 				'hero-pattern': 'url("/public/lovable-uploads/ddb1547a-e342-4029-8699-110a9a0d2489.png")',
-				'star-pattern': 'radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)'
+				'star-pattern': 'radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)',
+				'shimmer-gradient': 'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%)'
 			}
 		}
 	},

@@ -61,8 +61,16 @@
     background-size: 30px 30px;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-orbitron;
+  }
+
+  ::selection {
+    @apply bg-neon-pink/30 text-white;
   }
 }
 
@@ -89,6 +97,26 @@
   .cosmic-button {
     @apply bg-gradient-to-r from-neon-pink to-neon-green text-white font-orbitron py-3 px-6 rounded-lg transform transition-transform duration-300 hover:scale-105;
     box-shadow: 0 0 10px theme('colors.neon-pink');
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+  
+  .cosmic-button::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(to bottom right, rgba(255, 0, 255, 0.2), rgba(0, 255, 153, 0.2), rgba(255, 0, 255, 0.2));
+    z-index: -1;
+    transition: transform 0.6s ease;
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  
+  .cosmic-button:hover::after {
+    transform: translateX(0) translateY(0) rotate(45deg);
   }
 
   .space-card {
@@ -102,4 +130,27 @@
   .twinkle-star {
     @apply animate-twinkle;
   }
+
+  .wave-effect .wave {
+    position: relative;
+    width: 100%;
+    height: 80px;
+    transform: scaleX(1.5);
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease forwards;
+    opacity: 0;
+  }
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes floatImage {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
